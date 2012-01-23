@@ -1,20 +1,20 @@
 /**
-* ezMark - A Simple Checkbox and Radio button Styling plugin. 
+* ezMark - A Simple Checkbox and Radio button Styling plugin.
 * This plugin allows you to use a custom Image for Checkbox or Radio button. Its very simple, small and easy to use.
-* 
+*
 * Copyright (c) Abdullah Rubiyath <http://www.itsalif.info/>.
 * Released under MIT License
-* 
+*
 * Files with this plugin:
 * - jquery.ezmark.js
 * - ezmark.css
-* 
+*
 * <usage>
 * At first, include both the css and js file at the top
-* 
-* Then, simply use: 
+*
+* Then, simply use:
 *   $('selector').ezMark([options]);
-*  
+*
 * [options] accepts following JSON properties:
 *  checkboxClass   - class applied to wrapping container (div) of a checkbox input
 *  checkedClass    - class applied to wrapping container when the input is checked
@@ -24,10 +24,10 @@
 *  labelClass      - class applied to associated label for custom input
 *  disabledClass   - class applied to wrapping container (div) and associated label when input is disabled
 * </usage>
-* 
+*
 * View Documention/Demo here:
 * http://www.itsalif.info/content/ezmark-jquery-checkbox-radiobutton-plugin
-* 
+*
 * @author Abdullah Rubiyath, Gregory Waxman
 * @version 2.0
 * @date January 25, 2011
@@ -122,5 +122,6 @@
             var $divWrapper = $('#' + this.htmlFor).parent();
             $divWrapper.toggleClass($.data($divWrapper[0], NAMESPACE).classNames.hoverClass);
         });
+        //commit 2
     });
 }(jQuery));
