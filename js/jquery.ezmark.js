@@ -21,6 +21,7 @@
 *  radioClass      - class applied to the wrapping container (div) of a radio input
 *  hideClass       - class applied to the input
 *  hoverClass      - class applied while hovering over the label or div
+*  focusClass      - class applied to wrapping continaer (div) while input is focused
 *  labelClass      - class applied to associated label for custom input
 *  disabledClass   - class applied to wrapping container (div) and associated label when input is disabled
 * </usage>
@@ -42,6 +43,7 @@
         checkedClass: NAMESPACE + '-checked',
         hideClass: NAMESPACE + '-hide',
         hoverClass: NAMESPACE + '-hover',
+        focusClass: NAMESPACE + '-focus',
         labelClass: NAMESPACE + '-label',
         labelCheckboxClass: NAMESPACE + '-label-checkbox',
         labelRadioClass: NAMESPACE + '-label-radio',
@@ -91,7 +93,8 @@
                     {
                         classNames: {
                             checkedClass: defaults.checkedClass,
-                            hoverClass: defaults.hoverClass
+                            hoverClass: defaults.hoverClass,
+                            focusClass: defaults.focusClass
                         }
                     }
                 );
@@ -100,23 +103,31 @@
     };
 
     $(function () {
-        $(document.body).delegate('input.' + DELEGATE_CLASS, 'click', function ($e) {
+        handler = function(ev) {
             var $this = $(this);
             var type = this.type;
             var $parent = $this.parent();
             var parent = $parent[0];
-            var className = $.data(parent, NAMESPACE).classNames.checkedClass;
+
+            var classKey = ev.type == "click" ? 'checkedClass' : 'focusClass';
+            var className = $.data(parent, NAMESPACE).classNames[classKey];
+
+            var addClass = ev.type == "focusin" || (ev.type == "click" && this.checked);
 
             if (type === 'checkbox') {
-                $parent[(this.checked ? 'add' : 'remove') + 'Class'](className);
+                $parent[(addClass ? 'add' : 'remove') + 'Class'](className);
             }
             else if (type === 'radio') {
                 $('input[name="' + this.name + '"]').parent().removeClass(className);
-                if (this.checked) {
+                if (addClass) {
                     $parent.addClass(className);
                 }
             }
-        }).delegate('div.' + DELEGATE_CLASS, 'hover', function () {
+        }
+        $(document.body).delegate('input.' + DELEGATE_CLASS, 'click', handler)
+        .delegate('input.' + DELEGATE_CLASS, 'focus', handler)
+        .delegate('input.' + DELEGATE_CLASS, 'blur', handler)
+        .delegate('div.' + DELEGATE_CLASS, 'hover', function () {
             $(this).toggleClass($.data(this, NAMESPACE).classNames.hoverClass);
         }).delegate('label.' + DELEGATE_CLASS, 'hover', function () {
             var $divWrapper = $('#' + this.htmlFor).parent();
